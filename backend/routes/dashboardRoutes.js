@@ -1,12 +1,6 @@
 // const express = require("express");
 const { Router } = require("express");
+const { users } = require("../controllers/dashboardController");
 const router = Router();
-router.get("/dashboard", (req, res) => {
-  const dashboardData = ["item1", "item2", "item3"];
-  return res.status(200).json({ dashboardData });
-});
-router.get("/posts", (req, res) => {
-  const postData = ["post1", "post2", "post3"];
-  return res.status(200).json({ postData });
-});
+router.get("/users/:id/:name/:email", users);
 module.exports = router;

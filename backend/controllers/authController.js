@@ -60,10 +60,10 @@ module.exports.login = async (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
-      // Validations failed
       return res.status(500).json({ error: error.message });
     }
   } else {
+    // Validations failed
     return res.status(400).json({ errors: errors.array() });
   }
 };

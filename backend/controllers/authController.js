@@ -50,7 +50,9 @@ module.exports.login = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "1d" }
           );
-          return res.status(200).json({ token, msg: "Logged in successfully" });
+          return res
+            .status(200)
+            .json({ token, msg: "Logged in successfully", userId: user._id });
         } else {
           // Invalid password
           return res.status(400).json({ error: "Invalid password" });

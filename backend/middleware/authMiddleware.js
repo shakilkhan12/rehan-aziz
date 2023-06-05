@@ -3,7 +3,8 @@ module.exports.authMiddleware = (req, res, next) => {
   if (req.headers.authorization) {
     try {
       const token = req.headers.authorization;
-      jwt.verify(token, process.env.SECRET_KEY);
+      const user = jwt.verify(token, process.env.SECRET_KEY);
+      req.user = user;
       next();
     } catch (error) {
       // Invalid or expired token

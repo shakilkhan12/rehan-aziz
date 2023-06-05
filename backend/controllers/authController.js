@@ -45,11 +45,9 @@ module.exports.login = async (req, res) => {
         const matched = await bcrypt.compare(password, user.password);
         if (matched) {
           // create token
-          const token = jwt.sign(
-            { email: user.email },
-            process.env.SECRET_KEY,
-            { expiresIn: "1d" }
-          );
+          const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+            expiresIn: "1d",
+          });
           return res
             .status(200)
             .json({ token, msg: "Logged in successfully", userId: user._id });

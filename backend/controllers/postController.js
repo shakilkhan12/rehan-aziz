@@ -21,3 +21,15 @@ module.exports.createPost = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 };
+module.exports.getPosts = async (req, res) => {
+  try {
+    // Get all posts of logged in user
+    const posts = await PostModel.find({ user: req.user._id }).populate(
+      "user",
+      "name _id email"
+    );
+    return res.status(200).json({ posts });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};

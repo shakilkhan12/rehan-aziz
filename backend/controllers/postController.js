@@ -33,3 +33,16 @@ module.exports.getPosts = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+module.exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  if (!id || id === "" || id === undefined) {
+    return res.status(400).json({ error: "id is required" });
+  }
+  try {
+    // delete post
+    await PostModel.findByIdAndDelete(id);
+    return res.status(200).json({ msg: "Post has been deleted" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};

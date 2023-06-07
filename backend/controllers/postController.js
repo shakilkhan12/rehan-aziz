@@ -35,14 +35,43 @@ module.exports.getPosts = async (req, res) => {
 };
 module.exports.deletePost = async (req, res) => {
   const { id } = req.params;
+  const user = req.user._id;
   if (!id || id === "" || id === undefined) {
     return res.status(400).json({ error: "id is required" });
   }
   try {
     // delete post
-    await PostModel.findByIdAndDelete(id);
+    await PostModel.findOneAndDelete({ $and: [{ _id: id }, { user }] });
     return res.status(200).json({ msg: "Post has been deleted" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
+  }
+};
+module.exports.updatePost = async (req, res) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    try {
+      const { title, description, postId } = req.body;
+
+      const response = await PostModel.findOneAndUpdate(
+        {
+          $and: [{ _id: postId }, { user: req.user._id }],
+        },
+        {
+          $set: {
+            title,
+            description,
+          },
+        }
+      );
+      return res
+        .status(201)
+        .json({ msg: "Post has been updateded", post: response });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  } else {
+    // Validations failed
+    return res.status(400).json({ errors: errors.array() });
   }
 };

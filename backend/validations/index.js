@@ -15,3 +15,8 @@ module.exports.postValidations = [
   body("description").not().isEmpty().withMessage("description is required"),
   body("user").not().isEmpty().withMessage("user is required"),
 ];
+module.exports.updatePostValidations = [
+  body("title").not().isEmpty().trim().withMessage("title is required"),
+  body("description").not().isEmpty().withMessage("description is required"),
+  body("postId").not().isEmpty().withMessage("post id is required"),
+];
